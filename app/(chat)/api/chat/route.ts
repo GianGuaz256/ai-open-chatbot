@@ -95,7 +95,7 @@ export async function POST(request: Request) {
       });
 
       const result = streamText({
-        model: customModel(model.apiIdentifier),
+        model: customModel(model),
         system: systemPrompt,
         messages: coreMessages,
         maxSteps: 5,
@@ -116,6 +116,11 @@ export async function POST(request: Request) {
             try {
               const responseMessagesWithoutIncompleteToolCalls =
                 sanitizeResponseMessages(response.messages);
+
+              if (responseMessagesWithoutIncompleteToolCalls.length === 0) {
+                console.log('No valid messages to save after sanitization');
+                return;
+              }
 
               await saveMessages({
                 messages: responseMessagesWithoutIncompleteToolCalls.map(

@@ -2,13 +2,13 @@ import { openai } from '@ai-sdk/openai';
 import { anthropic } from '@ai-sdk/anthropic';
 import { togetherai } from '@ai-sdk/togetherai';
 
-import { experimental_wrapLanguageModel as wrapLanguageModel } from 'ai';
+import { type LanguageModelV1, experimental_wrapLanguageModel as wrapLanguageModel } from 'ai';
 
 import { customMiddleware } from './custom-middleware';
-import { Model } from './models';
+import type { Model } from './models';
 
 export const customModel = (model: Model) => {
-  let provider;
+  let provider: LanguageModelV1;
   switch (model.provider) {
     case 'openai':
       provider = openai(model.apiIdentifier);
